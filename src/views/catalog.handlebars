@@ -1,0 +1,60 @@
+<div id="carta">
+    {{!-- <img src="https://i.pinimg.com/originals/66/79/b6/6679b67c5fb579305d74dadd2029441c.jpg" width="300px"> --}}
+
+    <h1> Bienvenid@ {{firstname}} {{lastname}} </h1>
+    <p>
+        Email : {{email_}}
+    </p>
+
+    <p>
+        Age :{{age}}
+    </p>
+
+    <p>
+        Role : {{role}}
+    </p>
+
+    <a href="/logout" class="boton">
+        LogOut
+    </a>
+
+    {{!-- <button id="personalCatalog" class="boton" value="{{cart}}">
+        See your Cart
+    </button> --}}
+
+    {{!-- <a href="/PersonalCart" class="boton">
+        See your Shoopin Cart
+    </a> --}}
+    {{#if swUser}}
+    <a href="/PersonalCartStatic" class="boton">
+        See your Shooping Cart
+    </a>
+    {{/if}}
+    {{!-- <a href="/api/carts/cartPurchase" class="boton">
+        See your Shooping Cart
+    </a> --}}
+
+    {{#if swAdmin}}
+    <a href="/realTimeProducts" class="boton">
+        Product Managment Section
+    </a>
+
+    {{/if}}
+
+</div>
+
+
+
+{{#if swUser}}
+<div class="container-fluid" style="display: inline">
+    <h2>Product Catalog</h2>
+    <span id="counter" style="display: block"></span>
+    <div id="catalogo" class="row"></div>
+    <div id="cartid"> {{cart}}</div>
+</div>
+{{/if}}
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/catalog.js"></script>
