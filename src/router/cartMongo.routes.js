@@ -6,7 +6,6 @@ import {
     getCarts,
     getCartById,
     getProductsinCartById,
-    getProductsinCartByIdPagination,
     deleteCart,
     deleteCartProduct,
     deleteAllCartProducts,

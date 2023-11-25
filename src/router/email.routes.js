@@ -4,11 +4,10 @@ const EmailsService = new emailService()
 const router = express.Router()
 
 
-
 router.get("/", async (req, res) => {
-    console.log("entro en el emailrputes")
+
     const answer = await EmailsService.sendEmail()
-    console.log(answer)
+  
     const arrayAnswer = ManageAnswer(answer)
     return res.status(arrayAnswer[0]).send({
         status: arrayAnswer[0],

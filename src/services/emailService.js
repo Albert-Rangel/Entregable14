@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { logger } from '../utils/logger.js';
 
 export default class emailService {
 
@@ -40,6 +41,8 @@ export default class emailService {
             return "SUC|hola se envio"
 
         } catch (error) {
+            logger.error("Error en emailService/sendEmail: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }

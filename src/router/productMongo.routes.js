@@ -8,13 +8,12 @@ import {
     deleteProduct,
 
 }from '../dao/Mongo/ProductManager.js'
-// const productManager = new ProductManager();
 const ProductRoute = Router();
 
 ProductRoute.get('/', getProducts);
-ProductRoute.post('/',addProduct)
+ProductRoute.post('/', addProduct)
 ProductRoute.get('/Npagin/', getProducts_)
-ProductRoute.get('/:pid', getProductById);
+ProductRoute.get('/:pid',  getProductById);
 ProductRoute.put('/:pid', updateProduct)
 ProductRoute.delete('/:pid', deleteProduct)
 

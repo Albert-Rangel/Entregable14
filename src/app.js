@@ -1,9 +1,8 @@
 import express from "express"
 import handlebars from "express-handlebars"
 import { Server } from 'socket.io'
-import __dirname from './utils.js'
+import __dirname from './utils/utils.js'
 import ProductRoutes from './router/productMongo.routes.js'
-// import CartManager from './dao/Mongo/CartManager.js'
 import {
   addCartProducts,
   getProductsinCartByIdPagination,
@@ -17,8 +16,6 @@ import ChatsRoutes from './router/chat.routes.js'
 import MockRoutes from './router/mock.routes.js'
 import CartRoutes from './router/cartMongo.routes.js'
 import EmailsRoutes from './router/email.routes.js'
-import errorHandler from './middlewares/errors/index.js'
-// import ProductManager from './dao/Mongo/ProductManager.js'
 import compression from "express-compression"
 import ViewsRouter from './router/views.routes.js'
 import SessionRouter from './router/session.router.js'
@@ -28,16 +25,13 @@ import MongoStore from "connect-mongo"
 import session from "express-session"
 import mongoose from "mongoose"
 import cookieParser from "cookie-parser"
+import dotenv  from "dotenv"
 import config from "./config/env.config.js"
-
-// const productManager = new ProductManager();
-// const cartManager = new CartManager();
+import { errors } from "./middlewares/error.js"
 
 const app = express()
-// const program = new Command();
-// const fileStore = FileStore(session)
-
 const port = config.port;
+dotenv.config()
 
 //Creacion del servidorHTTP
 const HTTPserver = app.listen(port, () =>
@@ -150,7 +144,11 @@ app.use(compression({
   brotli: { enabled: true, zlib: {} }
 }))
 
-app.use(errorHandler)
+//app.use(errorHandler)
+// app.use(addLogger)
+app.use(errors)
+
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/api', SessionRouter)

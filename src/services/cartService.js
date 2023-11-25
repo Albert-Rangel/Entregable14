@@ -1,6 +1,8 @@
 
 import { cartsModel } from '../dao/models/carts.model.js';
 import { productsModel } from '../dao/models/products.model.js';
+import { logger } from '../utils/logger.js';
+
 export default class cartsService {
 
     async addCartviaService() {
@@ -11,6 +13,8 @@ export default class cartsService {
             return `SUC|Carrito agregado con el id ${carnnew._id}`
 
         } catch (error) {
+            logger.error("Error en CartService/addCartviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -41,6 +45,8 @@ export default class cartsService {
             return `SUC|Producto agregado al carrito ${cid}`
 
         } catch (error) {
+            logger.error("Error en CartService/addCartProductsviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -51,6 +57,8 @@ export default class cartsService {
             return allCarts
 
         } catch (error) {
+            logger.error("Error en CartService/getcartsviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -65,6 +73,8 @@ export default class cartsService {
             return CartById
 
         } catch (error) {
+            logger.error("Error en CartService/getCartbyIDviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -80,6 +90,8 @@ export default class cartsService {
             return products
 
         } catch (error) {
+            logger.error("Error en CartService/getProductsinCartbyIDviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -99,6 +111,8 @@ export default class cartsService {
             return cartObject
 
         } catch (error) {
+            logger.error("Error en CartService/getProductsinCartbyIDviaServicePagination: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -114,6 +128,8 @@ export default class cartsService {
             return `SUC|El carrito con el id ${cid._id} fue eliminado.`
         }
         catch (error) {
+            logger.error("Error en CartService/deleteCartviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
 
@@ -121,37 +137,23 @@ export default class cartsService {
 
     async deleteCartProductviaService(pid, cid) {
         try {
-            console.log("entro endeleteCartProductviaService")
 
             const CartById = await cartsModel.findById({ _id: cid })
-
-            // console.log("imprimir cartbyid CartById")
-            // console.log(CartById)
 
             //valido si existe el carro
             if (CartById == undefined || Object.keys(CartById).length === 0) return `E02|El carro con el id ${cid} no se encuentra agregado.`;
 
             let quantityofobjects = CartById.products.length
-            // console.log("imprimir quantityofobjects ")
-            // console.log(quantityofobjects)
 
             //valido si existe el producto dentro del carro
             let ProductinsideCart = CartById.products.find(prod => prod.id == pid)
-            // console.log("imprimir ProductinsideCart ")
-            // console.log(ProductinsideCart)
 
             if (ProductinsideCart == undefined || Object.keys(ProductinsideCart).length === 0) return `E02|El producto con el id ${pid} no se encuentra agregado al carrito con el id ${cid}.`;
 
             let productidinsideCart = CartById.products.find(prod => prod.id == pid)
-            // console.log("imprimir productidinsideCart ")
-            // console.log(productidinsideCart)
-
             let quantity = ProductinsideCart.quantity
-            // console.log("imprimir ProductinsideCart ")
-            // console.log(ProductinsideCart)
 
             if (quantity == 1 && quantityofobjects == 1) {
-                // console.log("primer if ")
 
                 await cartsModel.updateOne(
                     { "_id": cid },
@@ -161,7 +163,6 @@ export default class cartsService {
             }
 
             if (quantity > 1) {
-                // console.log("segundo if ")
 
                 await cartsModel.updateOne({
                     "_id": cid,
@@ -187,21 +188,28 @@ export default class cartsService {
 
         }
         catch (error) {
+            logger.error("Error en CartService/deleteCartProductviaService: " + error)
             return `ERR|Error generico. Descripcion :${error}`
         }
 
     }
 
     async deleteAllCartProductsviaService(cid) {
-        const CartById = await cartsModel.findById({ _id: cid })
-        if (CartById == undefined || CartById.length === 0) return `E02|El carro con el id ${cid} no se encuentra agregado.`;
 
-        const response = await cartsModel.updateOne(
-            { "_id": cid },
-            { $set: { products: [] } }
-        )
-        return `SUC|Productos eliminados del carrito ${cid}`
+        try {
+            const CartById = await cartsModel.findById({ _id: cid })
+            if (CartById == undefined || CartById.length === 0) return `E02|El carro con el id ${cid} no se encuentra agregado.`;
 
+            const response = await cartsModel.updateOne(
+                { "_id": cid },
+                { $set: { products: [] } }
+            )
+            return `SUC|Productos eliminados del carrito ${cid}`
+        } catch (error) {
+            logger.error("Error en CartService/deleteAllCartProductsviaService: " + error)
+            return `ERR|Error generico. Descripcion :${error}`
+
+        }
     }
 
     async updateProductQuantityviaService(pid, cid, quantity_) {
@@ -212,10 +220,10 @@ export default class cartsService {
             const cartObject = await cartsModel.findById({ _id: cid })
             if (cartObject == undefined || Object.keys(cartObject).length === 0 || cartObject.length === 0) return `E02|El carro con el id ${cid} no se encuentra agregado.`;
 
-            
+
             const productObject = await productsModel.find({ _id: pid })
             if (productObject == undefined || Object.keys(productObject).length === 0 || productObject.length === 0) return `E02|El producto con el id ${pid} no se encuentra agregado.`;
-            console.log("cart" +cartObject)
+            console.log("cart" + cartObject)
             let updateObject = await cartsModel.updateOne({
                 "_id": cid,
                 "products.id": pid
@@ -231,6 +239,8 @@ export default class cartsService {
             }
 
         } catch (error) {
+            logger.error("Error en CartService/updateProductQuantityviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
 
@@ -253,6 +263,8 @@ export default class cartsService {
             return `SUC|Carrito ${cid} actualizado.`
         }
         catch (error) {
+            logger.error("Error en CartService/updateCartProducstviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
 
@@ -275,6 +287,8 @@ export default class cartsService {
             return `SUC|Carrito ${cid} actualizado.`
         }
         catch (error) {
+            logger.error("Error en CartService/purchaseCart: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
 

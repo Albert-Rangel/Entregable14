@@ -14,9 +14,11 @@ dotenv.config({
     path:enviroment==="development"?"./.env.development":"./.env.production"
 })
 
+
 export default{
     port:process.env.PORT,
     mongourl:process.env.MONGO_URL,
     adminName:process.env.ADMIN_NAME,
     adminPassword:process.env.ADMIN_PASSWORD,
+    enviroment: process.env.ENVIROMENT,
 }

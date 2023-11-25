@@ -1,5 +1,7 @@
 
 import { productsModel } from '../dao/models/products.model.js';
+import { logger } from '../utils/logger.js';
+
 export default class productsService {
 
     async addProductviaService(ObjectProduct) {
@@ -17,6 +19,8 @@ export default class productsService {
             });
             return `SUC|Producto agregado con el id ${product._id}`
         } catch (error) {
+            logger.error("Error en ProductsService/addProductviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -27,6 +31,8 @@ export default class productsService {
             return products;
 
         } catch (error) {
+            logger.error("Error en ProductsService/getProductNpaginviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -63,23 +69,27 @@ export default class productsService {
             return products
 
         } catch (error) {
+            logger.error("Error en ProductsService/getProductWpaginviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
 
     async getProductbyIDviaService(pid) {
         try {
-            
+
             const found = await productsModel.find({ _id: pid });
-           
-            if (found === undefined || found ==[] || found == null || Object.keys(found).length === 0){
-               
+
+            if (found === undefined || found == [] || found == null || Object.keys(found).length === 0) {
+
                 return `E02|El producto con el id ${pid._id} no se encuentra agregado.`;
 
-            } 
+            }
             return found;
 
         } catch (error) {
+            logger.error("Error en ProductsService/getProductbyIDviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
         }
     }
@@ -88,32 +98,34 @@ export default class productsService {
         try {
 
             const { title, description, price, thumbnail, code, stock, status, category } = product;
-      
+
             const found = await productsModel.find({ _id: pid });
             if (found == undefined || Object.keys(found).length === 0) return `E02|El producto con el id ${pid} no se encuentra agregado.`;
-      
+
             for (const [key, value] of Object.entries(product)) {
-              found[key] = value;
+                found[key] = value;
             }
-      
+
             await productsModel.updateOne(
-              { _id: pid },
-              {
-                title,
-                description,
-                price,
-                thumbnail,
-                code,
-                stock,
-                status,
-                category
-              });
-      
+                { _id: pid },
+                {
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    code,
+                    stock,
+                    status,
+                    category
+                });
+
             return `SUC|El producto con el id : ${pid} fue actualizado.`;
-      
-          } catch (error) {
+
+        } catch (error) {
+            logger.error("Error en ProductsService/updateProductviaService: " + error)
+
             return `ERR|Error generico. Descripcion :${error}`
-          }
+        }
 
     }
     async deletProductviaService(pid) {
@@ -121,12 +133,13 @@ export default class productsService {
             const found = await productsModel.find({ _id: pid });
             if (found == undefined || Object.keys(found).length === 0) return `E02|El producto con el id ${pid._id} no se encuentra agregado.`;
             await productsModel.deleteOne({ _id: pid });
-      
+
             return `SUC|El producto con el id ${pid._id} fue eliminado.`
-          }
-          catch (error) {
+        }
+        catch (error) {
+            logger.error("Error en ProductsService/deletProductviaService: " + error)
             return `ERR|Error generico. Descripcion :${error}`
-          }
+        }
 
     }
 

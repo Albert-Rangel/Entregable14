@@ -5,9 +5,11 @@ import publicRoutes from "../middlewares/publicRoutes.js"
 import passport from 'passport';
 import privateRoutes from '../middlewares/privateRoutes.js';
 
-import { fork } from "child_process"
-
 const router = Router();
+
+
+
+
 
 router.post('/login', publicRoutes,
   passport.authenticate('login', { failureRedirect: '/failogin' }),
@@ -31,7 +33,7 @@ router.post('/login', publicRoutes,
       admin: false,
       role: req.user.role,
     };
-   
+
     req.session.isLogged = true;
 
     res.redirect('/products');

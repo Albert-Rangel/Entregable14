@@ -1,15 +1,8 @@
 import express, { Router, json } from "express"
-import { uploader } from '../middlewares/multer.js'
-// import ProductManager from '../dao/Mongo/ProductManager.js'
-// import CartManager from '../dao/Mongo/CartManager.js'
+import { logger } from "../utils/logger.js"
+
 import {
-    getProducts,
-    addProduct,
     getProducts_,
-    getProductById,
-    updateProduct,
-    deleteProduct,
-  
   }from '../dao/Mongo/ProductManager.js'
 import {
     getProductsinCartById
@@ -28,6 +21,20 @@ router.get("/realTimeProducts", privateRoutes, permissionsRoutes, async (req, re
         style: "home.css"
     })
 })
+
+
+router.get('/loggerTest',
+  async (req, res) => {
+    logger.debug("prueba de debug")
+    logger.error("prueba de error")
+    logger.http("prueba de http")
+    logger.info("prueba de info")
+    logger.warn("prueba de warning")
+    // logger.fatal("prueba de fatal")
+
+    res.send('prueba exitosa');
+  });
+
 
 router.get("/home", async (req, res) => {
 
