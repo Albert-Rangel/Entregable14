@@ -99,14 +99,13 @@ Socketserverio.on('connection', async (socket) => {
   })
   socket.on('obtainCartInfo', async (cid) => {
     const products = await getProductsinCartByIdPagination(cid)
-    console.log("encontro los productos paginados" + products)
     Socketserverio.emit('cartProducts', products)
   })
 
   socket.on('addNewProducttoCart', async ({ pid, cartid }) => {
 
     const cid = cartid.substr(1, cartid.length - 1);
-    const newproductincart = await addCartProducts(pid, cid)
+    const newproductincart = await addCartProducts({pid, cid})
     Socketserverio.emit('newProductinCart', newproductincart)
   })
 })

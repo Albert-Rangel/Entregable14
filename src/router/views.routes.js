@@ -21,11 +21,11 @@ router.get("/realTimeProducts", privateRoutes, permissionsRoutes, async (req, re
 
 router.get('/loggerTest',
     async (req, res) => {
-        // logger.debug("prueba de debug")
-        // logger.error("prueba de error")
-        // logger.http("prueba de http")
-        // logger.info("prueba de info")
-        // logger.warn("prueba de warning")
+        logger.debug("prueba de debug")
+        logger.error("prueba de error")
+        logger.http("prueba de http")
+        logger.info("prueba de info")
+        logger.warn("prueba de warning")
         res.send('prueba exitosa');
     });
 
@@ -113,9 +113,7 @@ router.get("/carts/:cid", async (req, res) => {
 })
 
 router.get('/login', publicRoutes, (req, res) => {
-    logger.info("info")
-    logger.http("http")
-    logger.error("error")
+   
 
     res.render("login", {
         title: "Login Form",

@@ -6,6 +6,7 @@ import {
 import cartsService from '../../services/cartService.js';
 import emailsService from '../../services/emailService.js';
 import { logger } from '../../utils/logger.js';
+import { exceptions } from 'winston';
 
 
 const emailService = new emailsService()
@@ -53,7 +54,7 @@ export const addCart = async (req, res) => {
     })
 
   } catch (error) {
-    logger.error("Error en CartManager/addCart: "+ error)
+    logger.error("Error en CartManager/addCart: " + error)
     return res.status(500).send({
       status: "500",
       message: `Error occured in CartManager in AddProduct`
@@ -61,21 +62,32 @@ export const addCart = async (req, res) => {
   }
 }
 export const addCartProducts = async (req, res) => {
-
+  let swWeb = false
   try {
-    const pid = req.params.pid
-    const cid = req.params.cid
+    let pid = 0
+    let cid = 0
+    logger.info("info")
+    logger.http("http")
+    logger.error("error")
+    if (req.params != undefined) {
+      pid = req.params.pid
+      cid = req.params.cid
+    } else {
+      swWeb = true
+      cid = req.cid
+      pid = req.pid
+    }
 
     const answer = await CartsService.addCartProductsviaService(pid, cid)
     const arrayAnswer = ManageAnswer(answer)
-    return res.status(arrayAnswer[0]).send({
+    return swWeb ? answer : res.status(arrayAnswer[0]).send({
       status: arrayAnswer[0],
       message: arrayAnswer[1]
-    })
+    });
 
   } catch (error) {
-    logger.error("Error en CartManager/addCartProducts: "+ error)
-    return res.status(500).send({
+    logger.error("Error en CartManager/addCartProducts: " + error)
+    return swWeb ? error : res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
     })
@@ -108,7 +120,7 @@ export const getCarts = async (req, res) => {
     return res.send(allCarts.sort((a, b) => a.id - b.id))
 
   } catch (error) {
-    logger.error("Error en CartManager/getCarts: "+ error)
+    logger.error("Error en CartManager/getCarts: " + error)
 
     return res.status().send({
       status: "500",
@@ -139,7 +151,7 @@ export const getCartById = async (req, res) => {
     return res.send(CartById);
 
   } catch (error) {
-    logger.error("Error en CartManager/getCartById: "+ error)
+    logger.error("Error en CartManager/getCartById: " + error)
     return res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
@@ -173,7 +185,7 @@ export const getProductsinCartById = async (req, res) => {
     }
     return swWeb ? answer : res.send(answer);
   } catch (error) {
-    logger.error("Error en CartManager/getProductsinCartById: "+ error)
+    logger.error("Error en CartManager/getProductsinCartById: " + error)
 
     return res.status(500).send({
       status: "500",
@@ -195,7 +207,7 @@ export const getProductsinCartByIdPagination = async (req, res) => {
       return res.send(answer);
     }
   } catch (error) {
-    logger.error("Error en CartManager/getProductsinCartByIdPagination: "+ error)
+    logger.error("Error en CartManager/getProductsinCartByIdPagination: " + error)
     return res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
@@ -214,7 +226,7 @@ export const deleteCart = async (req, res) => {
     return res.send(anwserObject);
   }
   catch (error) {
-    logger.error("Error en CartManager/deleteCart: "+ error)
+    logger.error("Error en CartManager/deleteCart: " + error)
 
     return res.status(500).send({
       status: "500",
@@ -246,7 +258,7 @@ export const deleteCartProduct = async (req, res) => {
     return swWeb ? anwserObject : res.send(anwserObject);
   }
   catch (error) {
-    logger.error("Error en CartManager/deleteCartProduct: "+ error)
+    logger.error("Error en CartManager/deleteCartProduct: " + error)
 
     return res.status(500).send({
       status: "500",
@@ -266,7 +278,7 @@ export const deleteAllCartProducts = async (req, res) => {
     return res.send(anwserObject);
   }
   catch (error) {
-    logger.error("Error en CartManager/deleteAllCartProducts: "+ error)
+    logger.error("Error en CartManager/deleteAllCartProducts: " + error)
     return res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
@@ -281,14 +293,14 @@ export const updateCartProductQuantity = async (req, res) => {
     let swWeb = false
 
     if (req.params != undefined) {
-    
+
 
       cid = req.params.cid
       pid = req.params.pid
       quantity_ = req.body.quantity
 
     } else {
-     
+
       swWeb = true
       cid = req.cid
       pid = req.pid
@@ -305,7 +317,7 @@ export const updateCartProductQuantity = async (req, res) => {
     return swWeb ? anwserObject : res.send(anwserObject);
   }
   catch (error) {
-    logger.error("Error en CartManager/updateCartProductQuantity: "+ error)
+    logger.error("Error en CartManager/updateCartProductQuantity: " + error)
     return res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
@@ -336,7 +348,7 @@ export const updateCartProducts = async (req, res) => {
     return swWeb ? arrayAnswer : res.send(arrayAnswer);
   }
   catch (error) {
-    logger.error("Error en CartManager/updateCartProducts: "+ error)
+    logger.error("Error en CartManager/updateCartProducts: " + error)
     return res.status(500).send({
       status: "500",
       message: `Se ha arrojado una exepcion: error`
@@ -494,7 +506,7 @@ export const purchaseCart = async (req, res) => {
 
   }
   catch (error) {
-    logger.error("Error en CartManager/purchaseCart: "+ error)
+    logger.error("Error en CartManager/purchaseCart: " + error)
 
     return res.status(500).send({
       status: "500",

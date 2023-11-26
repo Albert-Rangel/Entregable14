@@ -28,8 +28,6 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
     return `${timestamp} [${label}] ${level}: ${message}`;
 });
 
-
-
 const config = {
 
     PRODUCTION: {
@@ -64,7 +62,7 @@ const config = {
                 {
                     filename: "./errors.log",
                     level: "error",
-                    format: format.simple()
+                  
                 }
             )
         ]

@@ -1,1 +1,8 @@
-error: error {"label":"logs","timestamp":"2023-11-26T18:31:54.060Z"}
+error: error {"label":"logs","timestamp":"2023-11-26T19:21:44.746Z"}
+2023-11-26T19:24:05.047Z [logs] error: error
+2023-11-26T19:27:05.054Z [logs] error: error
+2023-11-26T19:29:56.393Z [logs] error: error
+2023-11-26T19:30:43.387Z [logs] error: error
+2023-11-26T19:37:11.468Z [logs] error: error
+2023-11-26T19:38:03.745Z [logs] error: error
+2023-11-26T19:38:03.746Z [logs] error: Error en CartManager/addCartProducts: TypeError: exceptions is not a constructor

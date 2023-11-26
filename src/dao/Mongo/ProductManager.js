@@ -214,7 +214,6 @@ export const deleteProduct = async (req, res) => {
   }
   catch (error) {
     logger.error("Error en ProductManager/deleteProduct: "+ error)
-
     return `ERR|Error generico. Descripcion :${error}`
   }
 }
