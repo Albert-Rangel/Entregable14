@@ -4,11 +4,7 @@ import { userModel } from '../dao/models/user.model.js';
 import publicRoutes from "../middlewares/publicRoutes.js"
 import passport from 'passport';
 import privateRoutes from '../middlewares/privateRoutes.js';
-
 const router = Router();
-
-
-
 
 
 router.post('/login', publicRoutes,
@@ -17,7 +13,6 @@ router.post('/login', publicRoutes,
     if (!req.user) {
       res.status(400).send();
     }
-
     const objectId_ = req.user.cart[0]._id;
 
     // Extract the hexadecimal representation

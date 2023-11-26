@@ -1,7 +1,7 @@
 import express from "express"
 import handlebars from "express-handlebars"
 import { Server } from 'socket.io'
-import __dirname from './utils/utils.js'
+import __dirname from './utils.js'
 import ProductRoutes from './router/productMongo.routes.js'
 import {
   addCartProducts,
@@ -144,8 +144,7 @@ app.use(compression({
   brotli: { enabled: true, zlib: {} }
 }))
 
-//app.use(errorHandler)
-// app.use(addLogger)
+
 app.use(errors)
 
 

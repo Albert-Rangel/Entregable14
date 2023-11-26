@@ -34,7 +34,7 @@ const config = {
 
     PRODUCTION: {
         
-        format: combine(label({ label: 'right now' }),
+        format: combine(label({ label: 'logs' }),
             timestamp(), myFormat),
         // levels: customLevelsOptions.levels,
         transports: [
@@ -52,7 +52,7 @@ const config = {
         ]
 
     }, DEVELOPMENT: {
-        format: combine(label({ label: 'right now' }),
+        format: combine(label({ label: 'logs' }),
             timestamp(), myFormat),
         // levels: customLevelsOptions.levels,
         transports: [

@@ -1,18 +1,15 @@
 import express, { Router, json } from "express"
 import { logger } from "../utils/logger.js"
-
 import {
     getProducts_,
-  }from '../dao/Mongo/ProductManager.js'
+} from '../dao/Mongo/ProductManager.js'
 import {
     getProductsinCartById
-  } from "../dao/Mongo/CartManager.js";
+} from "../dao/Mongo/CartManager.js";
 import publicRoutes from "../middlewares/publicRoutes.js"
 import privateRoutes from "../middlewares/privateRoutes.js"
 import permissionsRoutes from "../middlewares/adminpermissionsRoutes.js"
 
-// const productManager = new ProductManager();
-// const cartManager = new CartManager()
 const router = express.Router()
 
 router.get("/realTimeProducts", privateRoutes, permissionsRoutes, async (req, res) => {
@@ -22,19 +19,15 @@ router.get("/realTimeProducts", privateRoutes, permissionsRoutes, async (req, re
     })
 })
 
-
 router.get('/loggerTest',
-  async (req, res) => {
-    logger.debug("prueba de debug")
-    logger.error("prueba de error")
-    logger.http("prueba de http")
-    logger.info("prueba de info")
-    logger.warn("prueba de warning")
-    // logger.fatal("prueba de fatal")
-
-    res.send('prueba exitosa');
-  });
-
+    async (req, res) => {
+        // logger.debug("prueba de debug")
+        // logger.error("prueba de error")
+        // logger.http("prueba de http")
+        // logger.info("prueba de info")
+        // logger.warn("prueba de warning")
+        res.send('prueba exitosa');
+    });
 
 router.get("/home", async (req, res) => {
 
@@ -63,11 +56,7 @@ router.get("/PersonalCart", async (req, res) => {
 router.get("/PersonalCartStatic", async (req, res) => {
     console.log("entro en el personal cart de views.router")
     const cid = req.session.user.cart;
-    // console.log("cid : " + cid )
-
     const allProducts = await getProductsinCartById(cid)
-
-    // console.log(allProducts)
 
     res.render("cartStatic", {
         title: "Personal Shooping Cart",
@@ -124,6 +113,10 @@ router.get("/carts/:cid", async (req, res) => {
 })
 
 router.get('/login', publicRoutes, (req, res) => {
+    logger.info("info")
+    logger.http("http")
+    logger.error("error")
+
     res.render("login", {
         title: "Login Form",
         style: "login.css"
